@@ -1,0 +1,117 @@
+\documentclass[letterpaper,twoside,11pt]{report}
+%Define the title
+
+%Reload packages: texhash, mktexlsr
+\usepackage{verbatim}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{nicefrac}
+\usepackage{graphicx}
+%\usepackage{algorithmic}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+\usepackage{adjustbox}
+%\usepackage[margin=3in,top=0.5in]{geometry}
+\usepackage[top=2.5cm,bottom=2.5cm,inner=3cm,outer=2.3cm,letterpaper]{geometry}
+\usepackage{setspace}
+
+\newtheorem{property}{Property}
+\newtheorem{assumption}{Assumption}
+
+\bibliographystyle{IEEEtran}
+
+\DeclareMathOperator{\col}{column}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\real}{Re}
+\DeclareMathOperator{\imag}{Im}
+\DeclareMathOperator{\iunit}{j}
+\DeclareMathOperator{\decision}{Dec}
+\DeclareMathOperator{\SNR}{SNR}
+\hyphenation{ne-ver-the-less ma-trix fo-llow-ing co-ding mi-ni-mum go-ver-ned or-tho-go-nal}
+\newcommand\blfootnote[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
+
+
+\begin{document}
+%\maketitle
+\newgeometry{top=2.5cm,bottom=2.5cm,inner=2cm,outer=2cm}
+\begin{titlepage}
+\begin{center}
+% Upper part of the page
+\mbox{ }\\[2cm]
+\begin{minipage}{0.4\textwidth}
+	\centering
+	\includegraphics[width=0.4\textwidth]{figures/logo_upc}\\
+	Universitat Polit\`{e}cnica de Catalunya
+\end{minipage}\\[2cm]
+\textsc{\LARGE Statistical models for genome sequence mapping}\\[1.5cm]
+\textsc{\Large Master of Science thesis}\\[2cm]
+{\Large in partial Fulfillments for the Degree of}\\
+{ \Large \bfseries Electronic Engineering}\\[1cm]
+{\Large at the}\\
+{ \Large \bfseries Universitat Polit\`{e}cnica de Catalunya}\\[3cm]
+\begin{minipage}{0.4\textwidth}
+\begin{flushleft} \large
+\emph{Author:}\\
+Eduard \textsc{Valera i Zorita}
+\end{flushleft}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{flushright} \large
+\emph{Advisors:} \\
+Dr.~Guillaume \textsc{Filion}
+
+Dr.~Josep \textsc{Vidal Manzano}
+\end{flushright}
+\end{minipage}
+\vfill
+% Bottom of the page
+{\large \today}
+\end{center}
+\end{titlepage}
+
+\pagestyle{empty}
+\newgeometry{top=2.5cm,bottom=2.5cm,inner=3cm,outer=2.3cm}
+\onehalfspacing
+\cleardoublepage
+\tableofcontents
+\cleardoublepage
+\listoffigures
+\cleardoublepage
+\listoftables
+\cleardoublepage
+%\addcontentsline{toc}{chapter}{Acknowledgements}
+%\include{acknowledgements}
+%\cleardoublepage
+%\addcontentsline{toc}{chapter}{Resum}
+%\include{resum}
+%\cleardoublepage
+%\addcontentsline{toc}{chapter}{Resumen}
+%\include{resumen}
+%\cleardoublepage
+%\addcontentsline{toc}{chapter}{Abstract}
+%\include{abstract}
+\pagestyle{headings}
+\cleardoublepage
+\include{chap1}
+%\cleardoublepage
+%\include{chap2}
+%\cleardoublepage
+%\include{chap3}
+%\cleardoublepage
+%\include{chap4}
+%\cleardoublepage
+%\include{chap5}
+%\cleardoublepage
+%\include{chap6}
+%\cleardoublepage
+%\include{appendix}
+%\cleardoublepage
+\bibliography{thesis}{}
+\end{document}

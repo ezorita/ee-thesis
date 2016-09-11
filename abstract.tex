@@ -1,0 +1,63 @@
+\chapter*{Abstract}
+\thispagestyle{empty}
+In recent years, the growing number of oceanographic applications that rely on
+underwater communications has motivated extensive research in the field. These scientific projects usually require data acquisition from sensor networks or the use of
+unmanned underwater vehicles. One method to establish communication with such underwater
+systems is through the use of wired links. However, cables are hard to install or repair at certain
+depths, and can dramatically limit the mobility of both communication ends. Underwater wireless
+communications do not have such constraints and therefore present a much more attractive approach
+for underwater data transfer.
+
+Electromagnetic waves typically provide higher throughputs than any other wireless communication
+method. However, they suffer from tremendous attenuation in water mediums.
+Consequently, underwater radio communications are only applicable to very short range high-speed
+links. For general purpose communications, acoustic waves are the preferred method. The fact that the
+wave propagation speed is five orders of magnitude smaller causes serious issues, such as long
+end-to-end delays and extreme Doppler distortion produced by the relative motion between
+transmitter and receiver. The underwater channel also suffers from multipath propagation
+produced by wave refraction, as well as reflections from the surface and the sea bed.
+
+The aforementioned issues complicate the design of an underwater acoustic system, which is able to offer both reliability and a reasonable communication speed at the same time. The aim of this work is to increase the robustness of the state-of-the-art underwater communication schemes. We achieve this goal using multiple transmitting and receiving elements, where each transmitter-receiver combination counts as an additional communication channel. The increased number of parallel channels drastically reduces the the error probability of the link, i.e. the probability that all channels are experiencing simultaneous fading.
+
+Orthogonal frequency division multiplexing (OFDM) is considered for frequency-selective underwater
+acoustic (UWA) channels as it offers low complexity of fast Fourier transform-based
+(FFT) signal processing, and ease of reconfiguration for use with different bandwidths. In addition,
+by virtue of having a narrowband signal on each carrier, OFDM is easily conducive to
+multi-input multi-output (MIMO) system configurations.
+
+MIMO systems have been considered for UWA channels both for increasing the system throughput via spatial multiplexing \cite{LiHu-MIMOOFDMhighrate, St-MIMOOFDMUWA} and for improving the systems performance via spatial diversity
+\cite{LiSt-stbc}. The focus of our present work is on transmit diversity, which we pursue through the use of
+Alamouti coding applied across the carriers of an OFDM signal. Space-frequency block coding
+(SFBC) is chosen over traditional space-time block coding (STBC) as better suited for use with
+acoustic OFDM signals. Namely, while the Alamouti coherence assumption \cite{Alamouti} may be challenged
+between two adjacent OFDM blocks on a time-varying acoustic channel \cite{LiSt-stbc}, it is expected to hold
+between two adjacent OFDM carriers: frequency coherence assumption coincides with the basic
+OFDM design principle which calls for carriers to be spaced closely enough that the channel transfer
+function can be considered flat over each sub-band. Previous studies in radio communications
+have also revealed situations in which SFBC outperforms STBC \cite{LeWi-SFBCOFDM,LiCh-recperfDBC}.
+
+Two types of approaches have been considered for MIMO OFDM acoustic systems: nonadaptive,
+where each block is processed independently using pilot-assisted channel estimation \cite{LiHu-MIMOOFDMhighrate},
+and adaptive, where coherence between adjacent blocks is exploited to enable decision-directed operation and reduce the pilot overhead \cite{St-MIMOOFDMUWA}. Both
+approaches require front-end synchronization for initial Doppler compensation through signal
+resampling \cite{LiZh-MulticarrierUWA}. Front-end processing remains unchanged for multiple transmitters if they are co-located and experience the same gross Doppler effect. Otherwise, multiple resampling branches
+may be needed to compensate for transmitter-specific Doppler shifting \cite{TuDu-CoopMIMOOFDM}.
+
+Leveraging on the adaptive MIMO-OFDM design, we develop a receiver algorithm for the
+SFBC scenario. Specifically, we decouple the channel distortion into a slowly-varying gain and a
+faster-varying phase, which enables us to track these parameters at different speeds. For estimating
+the channel, we use either the orthogonal matching pursuit (OMP) algorithm \cite{LiPre-chanest} or a newly developed
+algorithm based on least squares with adaptive thresholding (LS-AT). This algorithm
+computes the full-size LS solution to the impulse response (IR) domain channel representation,
+then truncates it to keep only the significant IR coefficients. However, unlike the typical truncated
+LS solutions which use a fixed truncation threshold \cite{St-MIMOOFDMUWA}, the threshold is determined adaptively so
+as to provide a proper level of sparseness. LS-AT is found to perform close to OMP, at a lower
+computational cost. Once an initial channel estimate is formed, its tracking continues via time-smoothing. Simultaneously, an estimate of the residual Doppler scale is made for each of the two transmitters, and this estimate
+is used to predict and update the carrier phases in each new OFDM block.
+
+The advantages of Alamouti SFBC are contingent upon frequency coherence, which increases
+as more carriers are packed within a given bandwidth (the bandwidth efficiency simultaneously increases).
+However, there is a fine line after which inter-carrier interference (ICI) will be generated,
+and this line should not be crossed if simplicity of Alamouti detection is to be maintained. We
+assess this trade-off through simulation and experimental data processing, showing the existence
+of an optimal number of carriers and an accompanying transmit diversity gain.
