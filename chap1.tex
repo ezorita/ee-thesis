@@ -18,7 +18,11 @@ nitrogen-containing base and one or more phosphate groups (Figure
 	\begin{minipage}[b]{\linewidth}
 	  \centering
 	  \includegraphics[width=\textwidth]{figures/chap1_nucleotide}
-	  \caption{}
+	  \caption{DNA molecule. a) DNA nucleotides are formed by a
+       Phosphate group, a 5-carbon sugar and a nitrogenous base. b)
+       Sugars from RNA/DNA differ by an OH/H group on the second
+       carbon. c) The nitrogenous bases are Guanine, Adenine,
+       Cytosine, Thymine (DNA only) and Uracil (RNA only).}
 	  \label{fig:chap1:nucleotide}
    \end{minipage}
 \end{figure}
@@ -52,7 +56,10 @@ oriented in an opposed manner (see Figure
 	\begin{minipage}[b]{\linewidth}
 	  \centering
 	  \includegraphics[width=\textwidth]{figures/chap1_dna_structure}
-	  \caption{}
+	  \caption{Structure of the DNA double helix. The nitrogenous bases
+     hold together through hydrogen bonds: A and T with two bonds, C
+     and G with three. The nucleotide pairs form stacks through
+     sugar-phosphate bonds.}
 	  \label{fig:chap1:dna_structure}
    \end{minipage}
 \end{figure}
@@ -105,7 +112,10 @@ synthesis of proteins.
 	\begin{minipage}[b]{\linewidth}
 	  \centering
 	  \includegraphics*[width=0.6\textwidth]{figures/chap1_rna_enzyme_full}
-	  \caption{}
+	  \caption{Single-stranded RNA molecules can form secondary
+       structures. a) Self-annealing of complementary nucleotides from
+       the same RNA strand. b) Representation of the secondary
+       structure. Source \cite{alberts}.}
 	  \label{fig:chap1:rna_enzyme}
    \end{minipage}
 \end{figure}
@@ -170,7 +180,10 @@ circular DNA molecule called {\em bacterial chromosome}, found in the cytoplasm.
 	\begin{minipage}[b]{\linewidth}
 	  \centering
 	  \includegraphics*[width=0.6\textwidth]{figures/chap1_chromosomes_full}
-	  \caption{}
+	  \caption{Human karyotype. Human cells have 23 pairs of
+       chromosomes. Each cell contains two copies of chromosomes 1 to
+       22 and two copies of chromosome X (female) or one copy of
+       chromosome X and one copy of chromosome Y (male). Source \cite{alberts}.}
 	  \label{fig:chap1:chromosomes}
    \end{minipage}
 \end{figure}
@@ -192,7 +205,13 @@ model organisms.
 	\begin{minipage}[b]{\linewidth}
 	  \centering
 	  \includegraphics*[width=0.6\textwidth]{figures/chap1_genes_full}
-	  \caption{}
+	  \caption{Organization of genes in the human genome. a)
+       Representation of chromosome 22. b) A ten-fold expansion of a
+       fragment of chromosome 22 with about 40 genes indicated in
+       red. c) An expanded portion of (b) showing four genes. d)
+       Representation of one of the genes of chromosome 22 where the
+       regulatory region and its 9 exons are indicated. Source
+       \cite{alberts}.} 
 	  \label{fig:chap1:genes}
    \end{minipage}
 \end{figure}
@@ -216,7 +235,7 @@ bigger sequence blocks.
 	  \centering
 	  \includegraphics*[width=0.6\textwidth]{figures/chap1_genome_content}
 	  \caption{A representation of the nucleotide sequence content of
-       the sequenced Human genome. (Source \cite{})}
+       the sequenced Human genome. Source \cite{alberts}.}
 	  \label{fig:chap1:genome-content}
    \end{minipage}
 \end{figure}
@@ -1874,47 +1893,144 @@ need $C\ge1$ or $D\ge2$.
 %amb cap $k$, s'agafa el tros de sequencia mes gran possible amb un
 %dels valors de $k$ disponibles.
 
+
+
+
 \chapter{Results}
-\section{Algotihm performance}
+
+The mapping performance of our algorithm is tested and discussed in
+this chapter. The results of our mapper are consistently compared with
+two of the most widely used mappers: \texttt{bwa-mem} \cite{bwa} and
+\texttt{bowtie2} \cite{bowtie}. The performance of the three mappers
+has been tested on simulated Human and Drosophila Illumina data
+generated with wgsim (http://github.com/lh3/wgsim). 
+
+Datasets of 1 illion of single-end 50bp reads were generated for
+different sequencing error rates. Namely, we considered three
+usual sequencing scenarios: good (1\% error rate), standard (2\%) and
+average (5\%). Wgsim was run in command line with parameters
+\texttt{-e R -N 1000000 -1 50 -2 0}, where \texttt{R} was set to
+$0.01$, $0.02$ or $0.05$ depending on the scenario. The simulated
+reads are presented in fastq format without meaningful quality
+information (all bases are assigned the same quality score). The
+sequence headers contain the real locus and the strand of the
+read. After running the three mapping algorithms on the datasets the
+read headers are parsed and compared to the mapped locus and
+strand. Reads are considered well mapped if the estimate in the same
+strand and within 100 basepairs of the actual locus.
+
+The algorithms were benchmarked on a dual-processor Intel Xeon
+E5-2687W v2 system with 256GB of DDR3-RAM at 1866~Mhz. All softwares
+were set to run single-core. Our mapper and \texttt{bwa-mem} were ran
+using default parameters, \texttt{bowtie2} was setup to use the
+\texttt{very-sensitive} configuration. 
+
+Our benchmark includes three measurements:
+\begin{itemize}
+  \item {\bf Sensitivity} expressed as the fraction of correctly mapped
+    reads with respect to the total input read count.
+  \item {\bf Positive error rate} is the rate of false positives per true
+    positive.
+  \item {\bf Throughput} expressed as the rate of true positives per second.
+\end{itemize}
+
+We believe that these three magnitudes provide a good characterization
+of the performance of a mapper. Almost all benchmarks evaluate the
+sensitivity, but it is equally important to provide an accurate
+estimate of the expected number of incorrect mappings for each quality
+score. This will ultimately help the users decide which quality score
+threshold is better suited for their needs. We combine these
+magnitudes in two-dimensional plots to show the comparison of
+sensitivity versus positive error rate, and throughput versus positive
+error rate. The first provides valuable information to tune the
+acceptable quality threshold, clearly showing how many correct
+mappings one must disregard in order to reduce the false positive
+rate. The latter is a representation of how efficiently the
+computational power is spent.
+
+\subsubsection{Classification performance}
+
+The classification and mapping performence achieved by the different
+algorithms is represented in Figure \ref{fig:chap4:hg}.1. This result
+compares the sensitity versus the false positive rate achieved in the
+Human datasets with $1\%$ (left), $2\%$ and $5\%$ error rate. Each
+point represents the values for a different mapping quality threshold,
+i.e. a threshold on mapping quality is applied on the mapping output
+and all the reads below the threshold are discarded. The sensitivity
+and false positive rates are therefore measured  with the reads whose
+quality is above the threshold. This process is repeated for all the
+possible quality values, starting from 0 (the rightmost points). The
+general trend of the mappers is the one expected: the false positive
+rate decreases as the quality increases, but so does the sensitivity.
+
+Our algorithm outperforms the \texttt{bwa-mem} and \texttt{bowtie2} in
+the three configurations, achieving a good response even in the worst
+configuration. Remarkably, our algorithm consistently reports 100.000
+more well-mapped sequences with false positive rates below $10^{-4}$
+at the standard Illumina setting (2\%). Moreover, our mapper shows a
+smooth response on average sequencing (5\% error), recovering $>65\%$
+of the reads in all the possible configurations, whereas the other
+mappers drop well below $50\%$ as soon as they reach a false positive
+rate of $10^{-4}$.
+
 \begin{figure}[h]
 	\begin{minipage}[b]{0.5\linewidth}
 	  \centering
 	  \includegraphics[width=\textwidth]{figures/chap4_hg_1_15}
-	  \label{fig:chap4:hg115}
    \end{minipage}
 	\begin{minipage}[b]{0.5\linewidth}
 	  \centering
 	  \includegraphics[width=\textwidth]{figures/chap4_hg_2_15}
-	  \label{fig:chap4:hg215}
    \end{minipage}
-  \caption{Sensitivity vs error rate for all the possible mapping
-       quality thresholds. Illumina simulated reads on Human Genome
-       v19, 1\% (left) and 2\% (right) error rate. Comparison between
-       bowtie2 (blue), bwa-mem (red) and our mapper (black). }
-
-\end{figure}
-
-\begin{figure}[h]
 	\begin{minipage}[b]{\linewidth}
 	  \centering
 	  \includegraphics[width=0.5\textwidth]{figures/chap4_hg_5_15}
-	  \caption{Sensitivity vs error rate for all the possible mapping
-       quality thresholds. Illumina simulated reads on Human Genome
-       v19, 1\% error rate. Comparison between bowtie2 (blue), bwa-mem
-       (red) and our mapper (black). }
-	  \label{fig:chap4:hg515}
    \end{minipage}
+   \label{fig:chap4:hg}
+  \caption{Sensitivity vs error rate for all the possible mapping
+       quality thresholds. Illumina simulated reads on Human Genome
+       v19, with 1\% (left), 2\% (right) and 5\% (bottom) error
+       rate. Comparison between bowtie2 (blue), bwa-mem (red) and our
+       mapper (black).} 
 \end{figure}
+
+\subsubsection{Computational efficiency}
+
+In this section we assess the computational efficiency of the
+algorithms. To do so, we measure the rate of true positives produced
+at the output for a target error read. We prefer a direct measurement
+of how well the computational resources are spent rather than the
+absolute running time, since an algorithm may run very fast but
+produce poor results. The measurements of computational efficiency are
+shown in Figure \ref{fig:chap4:hg}.1 for Human Genome reads in
+the two extreme cases of 1\% error rate (left) and 5\% error rate
+(right). We expect the algorithms to perform faster when the data
+contains few errors, because the seeding is more effective and it is
+more likely that a few alignments will suffice to produce an
+estimate. This is what we observe if we compare the average true
+positive rates. All the algorithms perform faster when the error rate
+is small. On the other side, our algorithm takes advantage of the seed
+significance filter to speed up the mapping process when the seed is
+considered highly significant, which happens more often if the read
+quality is good. On the other side, for 5\% error, both bwa-mem and
+bowtie2 outperform our mapper for false positive rates above
+$10^{-4}$. Hence, the good performance of our mapper observed in
+Figure \ref{fig:chap4:hg-rate}.2 is at the expense of a decreased
+computational efficiency. This lower computational efficiency at high
+error rate is attributed to the time spent processing difficult
+reads. The difficult reads, which contain many errors, take orders of
+magnitude longer to map because they can only be mapped using
+high-sensitivity seeding strategies.
+
 \begin{figure}[h]
+   \label{fig:chap4:hg-rate}
 	\begin{minipage}[b]{0.5\linewidth}
 	  \centering
 	  \includegraphics[width=\textwidth]{figures/chap4_hg_1_15_throughput}
-	  \label{fig:chap4:hg115}
    \end{minipage}
 	\begin{minipage}[b]{0.5\linewidth}
 	  \centering
 	  \includegraphics[width=\textwidth]{figures/chap4_hg_5_15_throughput}
-	  \label{fig:chap4:hg215}
    \end{minipage}
    \caption{Throughput (correctly mapped sequences per core per
        second) vs error rate for all the possible mapping quality
@@ -1923,16 +2039,26 @@ need $C\ge1$ or $D\ge2$.
        (blue), bwa-mem (red) and our mapper (black). }
 \end{figure}
 
+\subsubsection{Other genomes}
+
+We have also benchmarked the mappers on a different reference:
+Drosophila Melanogaster. Figure \ref{fig:chap4:dmel}.3 summarizes the
+same results shown in Figure \ref{fig:chap4:hg115} for error rates of
+2\% and 5\%. The results show the same trend as in the Human genome,
+but all the algorithms show diminished sensitivity at the highest
+mapping qualities. This is due to the nature of the genome and
+generally indicates that the repeats have more copies compared to the
+average number in the Human genome. 
+
 \begin{figure}[h]
+   \label{fig:chap4:dmel}
 	\begin{minipage}[b]{0.5\linewidth}
 	  \centering
 	  \includegraphics[width=\textwidth]{figures/chap4_dmel_2_15}
-	  \label{fig:chap4:hg115}
    \end{minipage}
 	\begin{minipage}[b]{0.5\linewidth}
 	  \centering
 	  \includegraphics[width=\textwidth]{figures/chap4_dmel_5_15}
-	  \label{fig:chap4:hg215}
    \end{minipage}
    \caption{Sensitivity vs error rate for all the possible mapping
        quality thresholds. Illumina simulated reads on Drosophila
@@ -1942,11 +2068,31 @@ need $C\ge1$ or $D\ge2$.
 
 \end{figure}
 
-
-
-
-
-\section{Algotihm performance}
-\section{Classifier performance}
-
 \chapter{Conclusions and future work}
+
+Overall, we have shown that even though the current mapping algorithms
+have good performance, there is still room for
+innovation. Complementing the search indices with annotations of 
+genomic features, such as the $k$-mer neighborhood can enhance the
+overall performance and efficiency of the algorithm. It also provides
+greater control on the output because the use of statistical models,
+like the one presented, can be exploited to recursively evaluate the
+computational cost of the on-going computation. In this work, we have
+only shown a very simple and straightforward use of the neighborhood
+model. To better characterize the advantages of this annotation, we
+would have to evaluate its performance in a more extensive benchmark,
+with varying sequence lengths, error rates and other sequencing
+technologies. For our purpose, this mapper was ideated as a previous
+step to build a split-read mapper for Hi-C reads. Therefore, our goal
+was to achieve high sensitivity and improved quality score assignment on
+short reads, with running times comparable to the state-of-the-art
+mappers. In this sense, we have clearly succeeded.
+
+The next steps would be to improve the mapper to work reliably with
+the latest sequencing technologies (PacBio and ), which produce reads
+on the order of kilobasepairs long, but at the expense of a much
+higher error rate (around 15\%). To do so, we would need to generalize
+the Neighbor model to greater neighborhood spaces, in which Assumptions
+\ref{} and \ref{} of Section \ref{} may not hold. Other future tasks
+include the design of optimized decisions based on the seed
+significance to increase even more the computational efficiency.
